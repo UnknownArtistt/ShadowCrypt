@@ -1,5 +1,7 @@
 # AWPasswordManager
 
+<img src="Banner/Banner.PNG">
+
 AW Password Manager is a terminal based password manager developed in C++. The program is still in development process, in a near future the program will encrypt also the passwsords.
 
 In an era where digital security breaches are not just common but expected, the significance of having a strong, secure password cannot be overstated. Passwords are often the first line of defense in protecting personal, financial, and professional information from unauthorized access. Despite this, many individuals continue to use weak, easily guessable passwords, putting their digital lives at risk.
