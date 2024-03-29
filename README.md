@@ -1,4 +1,4 @@
-# AWPasswordManager
+# AW Password Manager
 
 <img src="Banner/Banner.PNG">
 
