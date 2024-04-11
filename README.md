@@ -4,6 +4,21 @@
 
 AW Password Manager is a terminal based password manager developed in C++. The program is prepared to run in Linux. The usage on Windows is possible but before installing it you need to download some dependencies (cryptopp, figlet and g++). If the dependencies are downloaded is possible to compile and run the program but is recommended to have a Linux distro like Ubuntu for a proper experience.
 
+## Important Information (Please read it)
+
+The program creates files to serve as password libraries, with .txt files being the preferred format due to their ease of handling. Please be aware that the program is designed to generate and encrypt passwords within these files. Due to the encryption process, the files may contain special characters and symbols that some text editors are unable to properly display.
+
+I strongly advise against manually editing your password library files. Tampering with these files can corrupt the data and compromise the security of your passwords. If there is a need to open or edit these files, we recommend using <b>Sublime Text</b>. This editor is capable of displaying encrypted characters by converting them to hexadecimal code, reducing the risk of file corruption.
+
+## Disclaimer
+
+The AWPasswordManager software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and noninfringement. In no event shall the authors, copyright holders, or contributors be liable for any claim, damages, or other liability, whether in an action of contract, tort, or otherwise, arising from, out of, or in connection with the Software or the use or other dealings in the Software.
+
+This Software is intended for educational and informational purposes only. It is the responsibility of the user to ensure their use of the Software complies with all applicable laws and regulations. The developer of this Software does not endorse or encourage any illegal use of the Software, nor will they be responsible for any such use by others.
+
+By using the Software, you acknowledge and agree that you have read this disclaimer, understand it, and agree to be bound by its terms. The user assumes all responsibility and risk for the use of this Software. The developer disclaims all liability for any damage, direct or indirect, resulting from the use of the Software.
+
+
 ## Context
 
 In an era where digital security breaches are not just common but expected, the significance of having a strong, secure password cannot be overstated. Passwords are often the first line of defense in protecting personal, financial, and professional information from unauthorized access. Despite this, many individuals continue to use weak, easily guessable passwords, putting their digital lives at risk.
