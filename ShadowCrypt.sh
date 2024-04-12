@@ -43,4 +43,4 @@ echo "Compilation finished"
 echo
 
 echo "Executing ShadowCrypt..."
-./AWPasswordManager
+./ShadowCrypt
