@@ -271,10 +271,10 @@ int main() {
         // we print the options
         std::cout << "\nWelcome to ShadowCrypt" << std::endl;
         std::cout << "----------------------------------";
-        std::cout << "\n1) Create a new Password Library" << std::endl;
-        std::cout << "2) See your passwords" << std::endl;
-        std::cout << "3) Create a new password" << std::endl;
-        std::cout << "4) Exit\n" << std::endl;
+        std::cout << "\n[1] Create a new Password Library" << std::endl;
+        std::cout << "[2] See your passwords" << std::endl;
+        std::cout << "[3] Create a new password" << std::endl;
+        std::cout << "[4] Exit\n" << std::endl;
         std::cout << "----------------------------------\n";
         std::cout << "Enter your option: ";
         std::cin >> option;                                                 // read the user's option
@@ -304,7 +304,7 @@ int main() {
             break;
 
         case 4:
-            std::cout << "From the shadows, the light is seen more clearly..." << std::endl; // goodbye message
+            std::cout << "\nFrom the shadows, the light is seen more clearly..." << std::endl; // goodbye message
             repeat = false;                                                                // break the while loop to end execution
             return 0;
         
