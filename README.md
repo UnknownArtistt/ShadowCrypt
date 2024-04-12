@@ -45,7 +45,7 @@ First create/go to the directory where you want to clone the repository
 
 Then download the source code or clone the repository:
 
-<b>git clone https://github.com/Julen-H/AWFileManager</b>
+<b>git clone https://github.com/Julen-H/AWPasswordManager</b>
 
 ### Manual Compilation
 
