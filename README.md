@@ -1,6 +1,6 @@
 # AW Password Manager
 
-<img src="Banner/banner.png">
+<img src="Banner/shadowcryptbanner.png">
 
 AW Password Manager is a terminal based password manager developed in C++. The program is prepared to run in Linux. The usage on Windows is possible but before installing it you need to download some dependencies (cryptopp, figlet and g++). If the dependencies are downloaded is possible to compile and run the program but is recommended to have a Linux distro like Ubuntu for a proper experience.
 
