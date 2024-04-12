@@ -38,9 +38,9 @@ echo
 
 echo "Compiling the program..."
 # Make sure to put the proper names of files and compiling flags 
-g++ -o AWPasswordManager main.cpp PasswordManager.cpp -lcryptopp
+g++ -o ShadowCrypt main.cpp PasswordManager.cpp -lcryptopp
 echo "Compilation finished"
 echo
 
-echo "Executing AW Password Manager..."
+echo "Executing ShadowCrypt..."
 ./AWPasswordManager

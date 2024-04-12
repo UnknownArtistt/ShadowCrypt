@@ -251,7 +251,7 @@ void addNewPassword(PasswordManager& passwordManager, const std::string& filePat
 /* This function executes a figlet command to generate a ascii art, this ascii art is the respective banner of the program. */
 void generateBanner() {
     std::cout << "\n--------------------------------------------------------------------------------\n";
-    system("figlet -f slant -c aw password manager\n"); // Execution of the figlet command
+    system("figlet -f slant -c ShadowCrypt\n"); // Execution of the figlet command
     std::cout << "\n                        [+] Coded By AbyssWatcher [+]\n";
     std::cout << "--------------------------------------------------------------------------------\n";
 }
@@ -269,7 +269,7 @@ int main() {
 
         generateBanner(); // we print the banner of the program using figlet
         // we print the options
-        std::cout << "\nWelcome to AW Password Manager" << std::endl;
+        std::cout << "\nWelcome to ShadowCrypt" << std::endl;
         std::cout << "----------------------------------";
         std::cout << "\n1) Create a new Password Library" << std::endl;
         std::cout << "2) See your passwords" << std::endl;
@@ -304,7 +304,7 @@ int main() {
             break;
 
         case 4:
-            std::cout << "Thank you for using AW Password Manager! See you later!" << std::endl; // goodbye message
+            std::cout << "From the shadows, the light is seen more clearly..." << std::endl; // goodbye message
             repeat = false;                                                                // break the while loop to end execution
             return 0;
         
