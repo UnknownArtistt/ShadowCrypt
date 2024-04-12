@@ -228,7 +228,7 @@ void addNewPassword(PasswordManager& passwordManager, const std::string& filePat
         std::cout << "Enter the account name: ";
         std::getline(std::cin, accountName); // We ask for the account name for the new password
 
-        newPassword = passwordManager.generateSecurePassword(12); // We generate a secure and random password
+        newPassword = passwordManager.generateSecurePassword(16); // We generate a secure and random password
 
         // We encrypt the new password
         std::string encryptedPassword = encryptPassword(newPassword, key);
