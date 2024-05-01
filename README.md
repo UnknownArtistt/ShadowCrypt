@@ -1,8 +1,20 @@
-# ShadowCrypt
+# ShadowCrypt v2.0
 
 <img src="Banner/shadowcryptbanner.png">
 
 ShadowCrypt is a terminal based password manager developed in C++. The program is prepared to run in Linux. The usage on Windows is possible but before installing it you need to download some dependencies (cryptopp, figlet and a c++ compiler). If the dependencies are downloaded is possible to compile and run the program but is recommended to have a Linux distro like Ubuntu for a proper experience.
+
+In an era where digital security breaches are not just common but expected, the significance of having a strong, secure password cannot be overstated. Passwords are often the first line of defense in protecting personal, financial, and professional information from unauthorized access. Despite this, many individuals continue to use weak, easily guessable passwords, putting their digital lives at risk.
+
+A secure password acts as a robust barrier against hackers and malicious software. It ensures that your private data remains confidential, safeguarding everything from your email accounts to bank details. However, creating and remembering complex passwords can be challenging. This is where our program steps in, offering a solution that not only generates strong, unique passwords for each of your accounts but also encrypts them and stores them in your pc.
+
+The creation of the program has a unique goal, let to know the importance of using strong passwords and the importance of being cautious with them. Getting strong and secure passwords is important but encrypting them gives an extra security measure to avoid attacks.
+
+## v2.0 New Features
+
+- A command shell to use the program
+- A more secure password and salt generation
+- New version for Fedora
 
 ## Important Information (Please read it)
 
@@ -18,15 +30,6 @@ This Software is intended for educational and informational purposes only. It is
 
 By using the Software, you acknowledge and agree that you have read this disclaimer, understand it, and agree to be bound by its terms. The user assumes all responsibility and risk for the use of this Software. The developer disclaims all liability for any damage, direct or indirect, resulting from the use of the Software.
 
-
-## Context
-
-In an era where digital security breaches are not just common but expected, the significance of having a strong, secure password cannot be overstated. Passwords are often the first line of defense in protecting personal, financial, and professional information from unauthorized access. Despite this, many individuals continue to use weak, easily guessable passwords, putting their digital lives at risk.
-
-A secure password acts as a robust barrier against hackers and malicious software. It ensures that your private data remains confidential, safeguarding everything from your email accounts to bank details. However, creating and remembering complex passwords can be challenging. This is where our program steps in, offering a solution that not only generates strong, unique passwords for each of your accounts but also encrypts them and stores them in your pc.
-
-The creation of the program has a unique goal, let to know the importance of using strong passwords and the importance of being cautious with them. Getting strong and secure passwords is important but encrypting them gives an extra security measure to avoid attacks.
-
 ## Technical Aspects
 
 ShadowCrypt can handle operations like:
@@ -39,17 +42,19 @@ For security reasons the encryption and decryption aspects are reserved. Same ha
 
 ## Installation
 
-To use ShadowCrypt you only need to download the program and compile it. You can use the bash script or you can compile it on your own. Is important to know that you will need a c/c++ compiler, cryptopp and figlet to use the program in its whole.
+To use ShadowCrypt you only need to download the program and compile it, you will need to download the latest version on the Releases section. You can use the bash script or you can compile it on your own. Is important to know that you will need a c/c++ compiler, cryptopp and figlet to use the program in its whole.
 
-First create/go to the directory where you want to clone the repository
+## Ubuntu / Debian based
 
-Then download the source code or clone the repository:
+The repository has uploaded the Ubuntu/Debian version. So you can clone the repository and then compile the program or run the bash script. For the Fedora version download the latest version on <b>Releases.</b>
+
+First create/go to the directory where you want to clone the repository and then download the source code or clone the repository:
 
 <b>git clone https://github.com/Julen-H/ShadowCrypt</b>
 
 ### Manual Compilation
 
-In Linux you should have already installed the gcc compiler. If you don´t have it you can do this way:
+In Ubuntu/Debian you should have already installed the gcc compiler. If you don´t have it you can do this way:
 
 <b>sudo apt update && sudo apt install build-essential</b>
 
@@ -67,10 +72,31 @@ Finally you can install figlet in this way:
 
 Once the dependecies are downloaded you will need to compile it:
 
-- Compile it -> <b>g++ -c PasswordManager.cpp</b> and later <b>g++ -o ShadowCrypt main.cpp PasswordManager.o -lcryptopp</b>
+- Compile it -> <b>g++ -o ShadowCrypt main.cpp PasswordManager.cpp -lcryptopp</b> 
 - Run it -> <b>./ShadowCrypt</b>
 
-### Bash Script
+## Fedora
+
+### Manual Compilation
+
+Install the C++ compiler:
+
+<b>sudo dnf install gcc-c++ -y</b>
+
+To install cryptopp you can use this command:
+
+<b>sudo dnf install cryptopp-devel -y</b>
+
+Finally you can install figlet in this way:
+
+<b>sudo dnf install figlet -y</b>
+
+Once the dependecies are downloaded you will need to compile it:
+
+- Compile it -> <b>g++ -o ShadowCrypt main.cpp PasswordManager.cpp -I/usr/include/cryptopp -lcryptopp</b>
+- Run it -> <b>./ShadowCrypt</b>
+
+### Bash Script (Both Versions)
 
 Give execution permissions:
 
@@ -83,5 +109,7 @@ Then execute it:
 Once is executed you can run it using the executable that will create the script (if you use the script every time you want to run the program the script will verify and try to install all the dependencies and will compile the program again):
 
 <b>./ShadowCrypt</b>
+
+
 
 

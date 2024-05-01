@@ -9,6 +9,7 @@
 #include "PasswordManager.h"
 #include <cstdlib>
 #include <random>
+#include <unordered_map>
 #include <crypto++/aes.h>
 #include <crypto++/modes.h>
 #include <crypto++/filters.h>
@@ -20,6 +21,30 @@ using namespace CryptoPP;
 
 namespace CryptoPP {
     typedef unsigned char byte;
+}
+
+/* This function receives the length of the salt that is going to be generate . This salt will be the half part 
+of the encryption/decryption passphrase. 
+*/
+std::string generateSalt(size_t length) {
+    // we set the charset to generate the salt
+    const char charset[] = 
+        "1234567890"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz"
+        "!@#$%^&*()_+,.;:[]{}\\|/<>?¿-'~\"";
+
+    std::string result;
+    result.reserve(length);
+
+    std::mt19937 rng(std::random_device{}());
+    std::uniform_int_distribution<> dist(0, sizeof(charset) - 2);
+
+    for (size_t i = 0; i < length; i++) {
+        result += charset[dist(rng)];
+    }
+
+    return result;
 }
 
 /* This function receives a constant reference of the password that is going to be encrypted and the encryption key.
@@ -89,29 +114,6 @@ std::string decryptPassword(const std::string& cypherWithIV, const std::string& 
 
 }
 
-/* This function receives the length of the salt that is going to be generate . This salt will be the half part 
-of the encryption/decryption passphrase. 
-*/
-std::string generateSalt(size_t length) {
-    // we set the charset to generate the salt
-    const char charset[] = 
-        "1234567890"
-        "ABCDEFGHIJKLMNÑOPQRSTUVWXYZ"
-        "abcdefghijklmnñopqrstuvwxyz";
-
-    std::string result;
-    result.reserve(length);
-
-    std::mt19937 rng(std::random_device{}());
-    std::uniform_int_distribution<> dist(0, sizeof(charset) - 2);
-
-    for (size_t i = 0; i < length; i++) {
-        result += charset[dist(rng)];
-    }
-
-    return result;
-}
-
 /*
 This function receives the master password that has enter the user and creates a file for the password library.
 It also writes the master password in the first line to verify in the future that the user has access to the passwords.
@@ -139,59 +141,6 @@ void createNewPasswordLibrary(const std::string& masterPassword) {
     } else { // error handler
         std::cout << "Failed to create the new library, please check the path and try again..." << std::endl;
     }
-}
-
-/*
-This function receives a reference to PasswordManager object and a constant reference of a string that would be the 
-path of the password library. The function verifies if the master password is correct and it prints all the 
-passwords of the library. Before the passwords are shown each password (including the master password in the verification) 
-is being decrypted to be readable.
-*/
-void listPasswords(PasswordManager& passwordManager, const std::string& filePath) {
-
-    std::ifstream file(filePath); // we open the password library
-    if (!file.is_open()) { // we verify if the library has been opened correctly
-        std::cout << "Failed to open the password library file." << std::endl; // error handler
-        return;
-    }
-
-    std::string encryptedMasterPassword, salt;
-    std::getline(file, encryptedMasterPassword); // We read the encrypted master password
-    std::getline(file, salt); // We read the salt
-
-    std::string userMasterPassword;
-    std::cout << "Enter the master password: ";
-    std::getline(std::cin, userMasterPassword); // We ask for the master password to the user
-    
-    std::string key = salt + userMasterPassword; // We build the key for encryption/decryption
-
-    // We decrypt the master password calling the decrypt function, we pass the encrypted master password and the key
-    std::string decryptedMasterPassword = decryptPassword(encryptedMasterPassword, key);
-
-    // We verify if the user choice of the master password if correct to give the access
-    if (userMasterPassword != decryptedMasterPassword) { 
-        std::cout << "Invalid master password. Access denied." << std::endl; // Access denied
-        return;
-    }
-
-    // We read each password of the library
-    std::string line;
-    while (std::getline(file, line)) {
-        if (!line.empty()) {
-            size_t delimiterPos = line.find(":"); // We chop the account name and password
-            if (delimiterPos != std::string::npos) {
-                std::string accountName = line.substr(0, delimiterPos); // We set the account name
-                std::string encryptedPassword = line.substr(delimiterPos + 1); // We set the password
-
-                // Decryption of the password
-                std::string decryptedPassword = decryptPassword(encryptedPassword, key);
-                // We show the account names and the passwords
-                std::cout << "Account: " << accountName << ", Password: " << decryptedPassword << std::endl;
-            }
-        }
-    }
-
-    file.close(); // We close the file
 }
 
 /* This function generates a secure and random password, encrypts it and writes in the password library. 
@@ -248,68 +197,183 @@ void addNewPassword(PasswordManager& passwordManager, const std::string& filePat
     }
 }
 
+/*
+This function receives a reference to PasswordManager object and a constant reference of a string that would be the 
+path of the password library. The function verifies if the master password is correct and it prints all the 
+passwords of the library. Before the passwords are shown each password (including the master password in the verification) 
+is being decrypted to be readable.
+*/
+void listPasswords(PasswordManager& passwordManager, const std::string& filePath) {
+
+    std::ifstream file(filePath); // we open the password library
+    if (!file.is_open()) { // we verify if the library has been opened correctly
+        std::cout << "Failed to open the password library file." << std::endl; // error handler
+        return;
+    }
+
+    std::string encryptedMasterPassword, salt;
+    std::getline(file, encryptedMasterPassword); // We read the encrypted master password
+    std::getline(file, salt); // We read the salt
+
+    std::string userMasterPassword;
+    std::cout << "Enter the master password: ";
+    std::getline(std::cin, userMasterPassword); // We ask for the master password to the user
+    
+    std::string key = salt + userMasterPassword; // We build the key for encryption/decryption
+
+    // We decrypt the master password calling the decrypt function, we pass the encrypted master password and the key
+    std::string decryptedMasterPassword = decryptPassword(encryptedMasterPassword, key);
+
+    // We verify if the user choice of the master password if correct to give the access
+    if (userMasterPassword != decryptedMasterPassword) { 
+        std::cout << "Invalid master password. Access denied." << std::endl; // Access denied
+        return;
+    }
+
+    // We read each password of the library
+    std::string line;
+    while (std::getline(file, line)) {
+        if (!line.empty()) {
+            size_t delimiterPos = line.find(":"); // We chop the account name and password
+            if (delimiterPos != std::string::npos) {
+                std::string accountName = line.substr(0, delimiterPos); // We set the account name
+                std::string encryptedPassword = line.substr(delimiterPos + 1); // We set the password
+
+                // Decryption of the password
+                std::string decryptedPassword = decryptPassword(encryptedPassword, key);
+                // We show the account names and the passwords
+                std::cout << "Account: " << accountName << ", Password: " << decryptedPassword << std::endl;
+            }
+        }
+    }
+
+    file.close(); // We close the file
+}
+
+void viewPassword(PasswordManager& passwordManager, const std::string& filePath) {
+    std::ifstream file(filePath);
+    if (!file.is_open()) {
+        std::cout << "Failed to open the password library file." << std::endl;
+        return;
+    }
+
+    std::string encryptedMasterPassword, salt;
+    std::getline(file, encryptedMasterPassword);
+    std::getline(file, salt);
+
+    std::string userMasterPassword;
+    std::cout << "Enter the master password: ";
+    std::getline(std::cin, userMasterPassword);
+
+    std::string key = salt + userMasterPassword;
+    std::string decryptedMasterPassword = decryptPassword(encryptedMasterPassword, key);
+
+    if (userMasterPassword != decryptedMasterPassword) {
+        std::cout << "Invalid master password. Access denied." << std::endl;
+        return;
+    }
+
+    std::unordered_map<std::string, std::string> accounts;
+    std::string line;
+    while (std::getline(file, line)) {
+        if (!line.empty()) {
+            size_t delimiterPos = line.find(":");
+            if (delimiterPos != std::string::npos) {
+                std::string accountName = line.substr(0, delimiterPos);
+                std::string encryptedPassword = line.substr(delimiterPos + 1);
+                accounts[accountName] = encryptedPassword;
+                std::cout << "Account: " << accountName << std::endl;
+            }
+        }
+    }
+
+    std::string chosenAccount;
+    std::cout << "Enter the account name to view the password: ";
+    std::getline(std::cin, chosenAccount);
+
+    if (accounts.find(chosenAccount) != accounts.end()) {
+        std::string decryptedPassword = decryptPassword(accounts[chosenAccount], key);
+        std::cout << "Password for " << chosenAccount << ": " << decryptedPassword << std::endl;
+    } else {
+        std::cout << "Account not found." << std::endl;
+    }
+
+    file.close();
+}
+
+
 /* This function executes a figlet command to generate a ascii art, this ascii art is the respective banner of the program. */
 void generateBanner() {
     std::cout << "\n--------------------------------------------------------------------------------\n";
     system("figlet -f slant -c ShadowCrypt\n"); // Execution of the figlet command
-    std::cout << "\n                        [+] Coded By AbyssWatcher [+]\n";
-    std::cout << "--------------------------------------------------------------------------------\n";
+    std::cout << "                  < Born in Darkness, Hidden in Darkness... >\n";
+    std::cout << "\n--------------------------------------------------------------------------------";
+    std::cout << "\n                        [+] Coded By AbyssWatcher [+]\n\n";
+    
+}
+
+void showHelp() {
+
+    std::cout << "\nShadowCrypt usage =>\n\n"
+        << "-newlib [master pwd]\t Creates a new library and assigns a master password for it\n"
+        << "-createpwd [lib path]\t Creates a new safe password in the specified library\n"
+        << "-showpwds [lib path]\t Shows all the passwords from the specified library\n"
+        << "-showacc [lib path]\t Shows all the account names and ask about which one is going to be shown\n"
+        << "-help\t\t\t Show this help message\n"
+        << "-exit\t\t\t Exit the program\n\n"
+        << "--------------------------------------------------------------------------------\n";
+}
+
+void userInterface() {
+
+    std::string input, masterPwd, filePath;
+    PasswordManager passwordManager;
+
+    std::cout << "ShadowCrypt: ~$ ";
+
+    while(std::getline(std::cin, input)) {
+
+        if (input == "-exit") {
+            std::cout << "\nStay in the Darkness, see you soon...\n\n";
+            break;
+        }
+
+        else if (input == "-help") {
+            showHelp();
+        }
+
+        else if (input.substr(0, 8) == "-newlib ") {
+            masterPwd = input.substr(8);
+            createNewPasswordLibrary(masterPwd);
+        }
+
+        else if (input.substr(0, 11) == "-createpwd ") {
+            filePath = input.substr(11);
+            addNewPassword(passwordManager, filePath);
+        }
+
+        else if (input.substr(0, 10) == "-showpwds ") {
+            filePath = input.substr(10);
+            listPasswords(passwordManager, filePath);
+        }
+
+        else if (input.substr(0, 9) == "-showacc ") {
+            filePath = input.substr(9);
+            viewPassword(passwordManager, filePath);
+        }
+
+        else {
+            std::cout << "Unknown command. Type -help to see the availbale commands.\n";
+        }
+
+        std::cout << "\nShadowCrypt: ~$ ";
+    }
+
 }
 
 int main() {
-
-    // variable declarations
-    std::string filePath;
-    int option;
-    bool repeat = true;
-    std::string masterPassword;
-    PasswordManager passwordManager;
-
-    while (repeat) {
-
-        generateBanner(); // we print the banner of the program using figlet
-        // we print the options
-        std::cout << "\nWelcome to ShadowCrypt" << std::endl;
-        std::cout << "----------------------------------";
-        std::cout << "\n[1] Create a new Password Library" << std::endl;
-        std::cout << "[2] See your passwords" << std::endl;
-        std::cout << "[3] Create a new password" << std::endl;
-        std::cout << "[4] Exit\n" << std::endl;
-        std::cout << "----------------------------------\n";
-        std::cout << "Enter your option: ";
-        std::cin >> option;                                                 // read the user's option
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // clear the input buffer after reading a numerical value with std::cin, ignore the content after the newline \n
-
-        // a switch to manage each option
-        switch (option) {
-
-        case 1:
-            std::cout << "Enter a master password for your new password library: "; // We ask for a master password for the new library
-            std::getline(std::cin, masterPassword); // we get the master password from the user
-            createNewPasswordLibrary(masterPassword); // we call to the function
-            break;
-
-        case 2:
-            passwordManager.clearPasswordList();
-            std::cout << "Enter the path of the password library: "; // we ask for the path of the password library
-            std::getline(std::cin, filePath); // we get the file path from the user
-            listPasswords(passwordManager, filePath); // we call to the function
-            break;
-
-        case 3:
-            passwordManager.clearPasswordList();
-            std::cout << "Enter the path of the password library: "; // we ask for the path of the password library
-            std::getline(std::cin, filePath); // we get the file path from the user
-            addNewPassword(passwordManager, filePath); // we call to the function
-            break;
-
-        case 4:
-            std::cout << "\nFrom the shadows, the light is seen more clearly..." << std::endl; // goodbye message
-            repeat = false;                                                                // break the while loop to end execution
-            return 0;
-        
-        default: // default case
-            break;
-        }
-    }
+    generateBanner();
+    showHelp();
+    userInterface();
+    return 0;
 }

@@ -19,7 +19,7 @@ bool PasswordManager::authenticateUser(const std::string& password) {
 }
 
 std::string PasswordManager::generateSecurePassword(int length) {
-    static const std::string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+    static const std::string characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+,.;:[]{}\\|/<>?¿-'~\"";
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(0, static_cast<int>(characters.size() - 1));
