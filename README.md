@@ -50,7 +50,7 @@ The repository has uploaded the Ubuntu/Debian version. So you can clone the repo
 
 First create/go to the directory where you want to clone the repository and then download the source code or clone the repository:
 
-<b>git clone https://github.com/Julen-H/ShadowCrypt</b>
+<b>git clone https://github.com/UnknownArtistt/ShadowCrypt</b>
 
 ### Manual Compilation
 
