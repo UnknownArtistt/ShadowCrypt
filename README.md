@@ -14,13 +14,17 @@ The creation of the program has a unique goal, let to know the importance of usi
 
 - A command shell to use the program
 - A more secure password and salt generation
-- New version for Fedora
+- New version for Fedora and Arch Linux
 
 ## Important Information (Please read it)
 
 The program creates files to serve as password libraries, with .txt files being the preferred format due to their ease of handling. Please be aware that the program is designed to generate and encrypt passwords within these files. Due to the encryption process, the files may contain special characters and symbols that some text editors are unable to properly display.
 
 <b>I strongly advise against manually editing your password library files.</b> Tampering with these files can corrupt the data and compromise the security of your passwords. If there is a need to open or edit these files, we recommend using <b>Sublime Text</b>. This editor is capable of displaying encrypted characters by converting them to hexadecimal code, reducing the risk of file corruption.
+
+### Error reading passwords; Arch version (not a common error)
+
+If you are experimenting errors while reading your passwords you can delete or create another password library, it can happend that the file of your library loses the correct format. It have only occurred once while testing the Arch version but can be a possibility, so if you experiment this error while reading delete and create another library. Make sure to test correctly before you use the passwords that the program has generated for you. Create a library and try to read your passwords before you use these passwords.
 
 ## Disclaimer
 
@@ -96,7 +100,28 @@ Once the dependecies are downloaded you will need to compile it:
 - Compile it -> <b>g++ -o ShadowCrypt main.cpp PasswordManager.cpp -I/usr/include/cryptopp -lcryptopp</b>
 - Run it -> <b>./ShadowCrypt</b>
 
-### Bash Script (Both Versions)
+## Arch Linux
+
+### Manual Compilation
+
+Install the C++ compiler:
+
+<b>sudo pacman -S gcc</b> Or <b>sudo pacman -Sy --needed --noconfirm gcc</b>
+
+To install cryptopp you can use this command:
+
+<b>sudo pacman -Sy --needed --noconfirm crypto++</b>
+
+Finally you can install figlet in this way:
+
+<b>sudo pacman -Sy --needed --noconfirm figlet</b>
+
+Once the dependecies are downloaded you will need to compile it:
+
+- Compile it -> <b>g++ -o ShadowCrypt main.cpp PasswordManager.cpp -lcryptopp -I/usr/include/cryptopp</b>
+- Run it -> <b>./ShadowCrypt</b>
+
+### Bash Script (All Versions)
 
 Give execution permissions:
 
@@ -109,7 +134,3 @@ Then execute it:
 Once is executed you can run it using the executable that will create the script (if you use the script every time you want to run the program the script will verify and try to install all the dependencies and will compile the program again):
 
 <b>./ShadowCrypt</b>
-
-
-
-
